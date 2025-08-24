@@ -2,7 +2,7 @@ import { addSeparatorsToNumberString, masks } from "@/helpers";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { useCallback } from "react";
 import { useController, useFormContext } from "react-hook-form";
-import { Text, TextInput, TextInputProps } from "react-native";
+import { TextInput, TextInputProps } from "react-native";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 
@@ -24,6 +24,10 @@ export const Field: React.FC<Props> = ({
   label,
   ...props
 }) => {
+  const bgColor = useThemeColor(
+    { dark: "#212121", light: "#eee4" },
+    "background"
+  );
   const color = useThemeColor({ dark: "#eee", light: "#111" }, "text");
   const { control } = useFormContext();
   const {
@@ -50,13 +54,14 @@ export const Field: React.FC<Props> = ({
   return (
     <ThemedView>
       {!!label ? (
-        <Text className="!text-white pt-4 pb-2 block">{label}</Text>
+        <ThemedText className="pt-4 pb-2 block">{label}</ThemedText>
       ) : null}
 
       <TextInput
         {...props}
         {...field}
         onChangeText={handleChange}
+        style={{ backgroundColor: bgColor }}
         placeholderTextColor={color}
         className="form-field"
       />
