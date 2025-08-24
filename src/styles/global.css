@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.form-field {
+    @apply w-full bg-[#212121] rounded-xl outline-gray-950 p-2 shadow-xl text-white;
+}
+
+button {
+    @apply p-2 bg-green-700 rounded-lg text-white;
+}
+
+.message-error {
+    @apply text-red-500 font-semibold py-1 px-2 block;
+}
