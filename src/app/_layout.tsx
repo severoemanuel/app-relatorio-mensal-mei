@@ -11,6 +11,10 @@ import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { Image, View } from "react-native";
+
+// @ts-ignore
+import Logo from "../assets/images/GRMEI.png";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -28,7 +32,16 @@ export default function RootLayout() {
       <Stack initialRouteName="index">
         <Stack.Screen
           name="index"
-          options={{ title: "Gerador de relatório mensal do MEI" }}
+          options={{
+            title: "Gerador de relatório mensal do MEI",
+            headerLeft: () => {
+              return (
+                <View className="pr-2">
+                  <Image source={Logo} className="w-10 h-10 rounded" />
+                </View>
+              );
+            },
+          }}
         />
         <Stack.Screen name="+not-found" />
       </Stack>
