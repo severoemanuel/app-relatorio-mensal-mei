@@ -6,18 +6,20 @@ import { ThemedView } from "@/components/ThemedView";
 import { Field } from "@/components/form/Field";
 import { Form } from "@/components/form/Form";
 import { PreviewFormData, previewFormDto, previewSchema } from "@/helpers";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { previewCSS } from "@/styles/preview";
 import * as Print from "expo-print";
 
 export default function HomeScreen() {
+  const [loading, setLoading] = useState(false)
   const methods = useForm<PreviewFormData>({
     resolver: yupResolver(previewSchema as any, { abortEarly: false }),
   });
 
   const onSubmit = useCallback(async (formData: PreviewFormData) => {
+    setLoading(true)
     const query = new URLSearchParams(
       previewFormDto(formData) as any
     ).toString();
@@ -25,6 +27,8 @@ export default function HomeScreen() {
     const response = await fetch(url);
 
     const html = await response.text();
+
+    setLoading(false)
 
     const htmlWithStyle = `
     <html>
@@ -50,23 +54,23 @@ export default function HomeScreen() {
     <ScrollView className="flex flex-1 pb-8">
       <ThemedView className="flex flex-1 px-2 pb-20">
         <Form methods={methods}>
-          <Field
+          <Field disabled={loading}
             name="cnpj"
             mask="cnpj"
             label="CNPJ"
             placeholder="Digite aqui seu CNPJ"
           />
-          <Field
+          <Field disabled={loading}
             name="razaoSocial"
             label="Empreendedor individual (razão social)"
             placeholder="Digite aqui sua razão social"
           />
-          <Field
+          <Field disabled={loading}
             name="periodoApuracao"
             label="Período de apuração"
             placeholder="Digite aqui o período de apuração (ex: JANEIRO/2024)"
           />
-          <Field
+          <Field disabled={loading}
             name="local"
             label="Localização"
             placeholder="Digite aqui a localização"
@@ -79,14 +83,14 @@ export default function HomeScreen() {
               </ThemedText>
             </ThemedView>
             <ThemedView>
-              <Field
+              <Field disabled={loading}
                 number
                 name="comercioComNF"
                 label="Sem emissão de documento fiscal"
               />
             </ThemedView>
             <ThemedView>
-              <Field
+              <Field disabled={loading}
                 number
                 name="comercioSemNF"
                 label="Com documento fiscal emitido"
@@ -101,14 +105,14 @@ export default function HomeScreen() {
               </ThemedText>
             </ThemedView>
             <ThemedView>
-              <Field
+              <Field disabled={loading}
                 number
                 name="industriaComNF"
                 label="Sem emissão de documento fiscal"
               />
             </ThemedView>
             <ThemedView>
-              <Field
+              <Field disabled={loading}
                 number
                 name="industriaSemNF"
                 label="Com documento fiscal emitido"
@@ -123,14 +127,14 @@ export default function HomeScreen() {
               </ThemedText>
             </ThemedView>
             <ThemedView>
-              <Field
+              <Field disabled={loading}
                 number
                 name="servicosComNF"
                 label="Sem emissão de documento fiscal"
               />
             </ThemedView>
             <ThemedView>
-              <Field
+              <Field disabled={loading}
                 number
                 name="servicosSemNF"
                 label="Com documento fiscal emitido"
@@ -139,7 +143,7 @@ export default function HomeScreen() {
           </ThemedView>
 
           <ThemedView className="pt-4">
-            <Button onPress={methods.handleSubmit(onSubmit)} title="Enviar" />
+            <Button disabled={loading} onPress={methods.handleSubmit(onSubmit)}  title="Enviar" />
           </ThemedView>
         </Form>
       </ThemedView>
